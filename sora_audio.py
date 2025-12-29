@@ -110,19 +110,27 @@ if __name__ == '__main__':
     start = time.time()       # 開始時刻
 
 
-    input_folder = '/mnt/r/audio_original'
+    input_folder = '/mnt/r/sora_movie/audio_original'
+
+    # input_folder = '/mnt/r/sora_movie/audio_original'
+    # store_dir = '/mnt/r/sora_movie/audio_split'
 
     # 声で使用
-    # model_name = "big_beta5e"
-    model_name = "big_beta6x"
-
     model_type = 'mel_band_roformer'
-    config_path = f'checkpoint_config/{model_name}.yaml'
-    start_check_point = f'checkpoint/{model_name}.ckpt'
-    store_dir = '/mnt/r/'
+    config_path = 'checkpoint_config/big_beta5e.yaml'
+    start_check_point = 'checkpoint/big_beta5e.ckpt'
+    store_dir = '/mnt/r/sora_movie/audio_voice'
 
     inference(model_type, config_path, start_check_point, input_folder, store_dir, output_instruments=["vocals"])
 
+    # 声以外で使用
+    model_type = 'bs_roformer'
+    # /home/virtual1/Music-Source-Separation-Training/models/bs_roformer/bs_roformer.pyを変更
+    config_path = 'checkpoint_config/bs_hyperace.yaml'
+    start_check_point = 'checkpoint/bs_hyperace.ckpt'
+    store_dir = '/mnt/r/sora_movie/audio_inst'
+
+    inference(model_type, config_path, start_check_point, input_folder, store_dir, output_instruments=["instrument"])
 
 
     print(f"実行時間: {time.time() - start:.3f} 秒")

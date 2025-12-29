@@ -74,6 +74,25 @@ python inference.py \
 All inference parameters are [here](https://github.com/ZFTurbo/Music-Source-Separation-Training/blob/main/utils/settings.py#L130).
 Convert models to ONNX and TensorRT formats [here](https://github.com/ZFTurbo/MSS_ONNX_TensorRT).
 
+### 追加の推論機能
+
+- 20分を超える長尺ファイルは自動で20分ごとに分割され、各セグメントを推論したあとに結合して1つの出力（ステムごと）になります。追加フラグは不要です。
+- configで正規化が有効な場合、長尺推論では全体の統計量を使って正規化し、セグメント間のスケールを揃えます。
+- FLAC出力は `--flac_file` で有効化できます。サブタイプは `--pcm_type` で指定します（`PCM_16` / `PCM_24` / `FLOAT`）。
+
+例（FLAC出力）:
+
+```bash
+python inference.py \
+    --model_type mdx23c \
+    --config_path configs/config_mdx23c_musdb18.yaml \
+    --start_check_point results/last_mdx23c.ckpt \
+    --input_folder input/wavs/ \
+    --store_dir separation_results/ \
+    --flac_file \
+    --pcm_type PCM_24
+```
+
 ## Useful notes
 
 * All batch sizes in config are adjusted to use with single NVIDIA A6000 48GB. If you have less memory please adjust correspodningly in model config `training.batch_size` and `training.gradient_accumulation_steps`.
