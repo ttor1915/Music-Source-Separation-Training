@@ -69,4 +69,4 @@ training:
 inference:
   batch_size: 1
   dim_t: 1201
-  num_overlap: 2
+  num_overlap: 1
